@@ -1,0 +1,8 @@
+
+.DS_Store
+Local-date-time/.idea
+Local-date-time/local_date_time.iml
+local_date_time/out/
+snapshot/out/
+snapshot/.idea
+snapshot/string_builder_snapshot.iml
