@@ -27,5 +27,5 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-.idea
+.idea/
 concurrent_bank.iml
