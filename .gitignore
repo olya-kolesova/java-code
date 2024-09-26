@@ -6,3 +6,5 @@ local_date_time/out/
 snapshot/out/
 snapshot/.idea/
 snapshot/string_builder_snapshot.iml
+filter/.idea/
+filter/filter.iml
