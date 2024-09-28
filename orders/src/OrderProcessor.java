@@ -4,6 +4,8 @@ import static java.util.stream.Collectors.*;
 
 public class OrderProcessor {
 
+    record Product(String product, double sum) {}
+
     public Map<String, List<Order>> groupOrdersByProduct(List<Order> orders) {
         Map<String, List<Order>> ordersMap = orders.stream().collect(groupingBy(Order::getProduct));
         ordersMap.entrySet().stream().forEach(System.out::println);
@@ -36,14 +38,12 @@ public class OrderProcessor {
 
 
     public Map<String, Double> getWithCommonPriceThreeExpensiveProducts(List<Order> orders) {
-        record Product(String product, double sum) {}
         Map<String, Product> products = orders.stream().collect(groupingBy(Order::getProduct, collectingAndThen(toList(), list -> {
             String product = list.getFirst().getProduct();
             double sum = list.stream().mapToDouble(Order::getCost).sum();
             return new Product(product, sum);
         })));
-        Map<String, Double> result = getThreeExpensiveProducts(orders).keySet().stream().map(products::get).peek(System.out::println).collect(toMap(Product::product, Product::sum));
-        return result;
+        return getThreeExpensiveProducts(orders).keySet().stream().map(products::get).peek(System.out::println).collect(toMap(Product::product, Product::sum));
     }
 
 
