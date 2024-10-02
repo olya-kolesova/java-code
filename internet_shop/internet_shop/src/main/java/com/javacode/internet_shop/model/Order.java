@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "orders")
 public class Order {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     private double cost;
 
@@ -22,6 +23,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
 
     enum Status {
         ORDERED,
