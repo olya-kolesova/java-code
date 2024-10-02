@@ -1,5 +1,7 @@
 package com.javacode.internet_shop.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.javacode.internet_shop.jview.Views;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -11,12 +13,16 @@ public class User {
 
     @Id
     @GeneratedValue
+    @JsonView(Views.UserSummary.class)
     private long id;
 
+    @JsonView(Views.UserSummary.class)
     private String name;
 
+    @JsonView(Views.UserSummary.class)
     private String email;
 
+    @JsonView(Views.UserDetails.class)
     @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
 
@@ -27,11 +33,11 @@ public class User {
         this.email = email;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

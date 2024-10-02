@@ -37,7 +37,7 @@ public class Order {
 
     public Order() {}
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 

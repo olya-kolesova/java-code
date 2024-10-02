@@ -33,5 +33,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User findUserById(long id) throws NoSuchElementException {
+        return userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    }
+
 
 }
