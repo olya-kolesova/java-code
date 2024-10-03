@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Item {
@@ -16,7 +17,7 @@ public class Item {
 
     private double price;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToMany
     @JoinTable(
         name = "orders_with_items",
@@ -51,5 +52,16 @@ public class Item {
         this.price = price;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return id == item.id;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

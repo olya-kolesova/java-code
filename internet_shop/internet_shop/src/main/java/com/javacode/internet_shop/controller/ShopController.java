@@ -2,7 +2,6 @@ package com.javacode.internet_shop.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.javacode.internet_shop.jview.Views;
-import com.javacode.internet_shop.model.Item;
 import com.javacode.internet_shop.model.User;
 import com.javacode.internet_shop.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -43,7 +42,7 @@ public class ShopController {
     }
 
     @JsonView(Views.UserSummary.class)
-    @PatchMapping("/api/shop/user/{id}")
+    @PutMapping("/api/shop/user/{id}")
     public ResponseEntity<Object> updateUserNameOrEmail(@PathVariable long id, @RequestBody User user) {
         User userUpdated = userService.findUserById(id);
         userUpdated.setName(user.getName());
@@ -60,6 +59,7 @@ public class ShopController {
         return new ResponseEntity<>(removedUser, HttpStatus.OK);
 
     }
+
 
 
 

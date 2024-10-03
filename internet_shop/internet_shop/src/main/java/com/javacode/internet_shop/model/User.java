@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -24,7 +25,7 @@ public class User {
     private String email;
 
     @JsonView(Views.UserDetails.class)
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
 
     public User() {}
@@ -66,5 +67,16 @@ public class User {
         this.orders = orders;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

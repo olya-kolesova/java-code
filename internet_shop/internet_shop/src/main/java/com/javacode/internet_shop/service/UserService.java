@@ -3,6 +3,7 @@ package com.javacode.internet_shop.service;
 import com.javacode.internet_shop.model.User;
 import com.javacode.internet_shop.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -47,9 +48,13 @@ public class UserService {
         return Pattern.compile("\\w+.*\\w*@[a-zA-Z]+\\.[a-zA-Z]+").matcher(email).matches();
     }
 
+
+    @Transactional
     public void removeUser(long id) {
         userRepository.deleteById(id);
     }
+
+
 
 
 }

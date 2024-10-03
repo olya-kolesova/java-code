@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "orders")
@@ -26,10 +27,11 @@ public class Order {
     private User user;
 
 
-    enum Status {
+    public enum Status {
         ORDERED,
         READY,
-        DELIVERED
+        DELIVERED,
+        WAITING,
     }
 
     @Enumerated(EnumType.STRING)
@@ -78,4 +80,16 @@ public class Order {
         this.user = user;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return id == order.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

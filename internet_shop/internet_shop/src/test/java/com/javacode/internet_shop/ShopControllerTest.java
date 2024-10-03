@@ -2,79 +2,128 @@ package com.javacode.internet_shop;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.javacode.internet_shop.controller.ShopController;
 import com.javacode.internet_shop.model.User;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.javacode.internet_shop.service.UserService;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import static org.hamcrest.CoreMatchers.is;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(ShopController.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ShopControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    private String userJson;
+    @MockBean
+    private UserService userService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    User user;
 
     @BeforeEach
     void setUp() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        User user = new User("Alicia", "alicia@gmail.com");
-        userJson = objectMapper.writeValueAsString(user);
+        user = new User();
+        user.setName("Kolya");
+        user.setEmail("kolya@gmail.com");
     }
 
     @Test
-    public void createUser_existedUser_Conflict() throws Exception {
+    @Order(1)
+    public void createUser_newUser_isCreated() throws Exception {
 
-        ResultActions result = mockMvc.perform(post("/api/shop/user")
-                .contentType(MediaType.APPLICATION_JSON).content(userJson));
+        given(userService.save(any(User.class))).willReturn(user);
 
-        result.andExpect(status().isConflict());
+        ResultActions response = mockMvc.perform(post("/api/shop/user")
+                .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(user)));
+
+        response.andExpect(status().isCreated())
+            .andExpect(jsonPath("$.name").value(user.getName()))
+            .andExpect(jsonPath("$.email").value(user.getEmail()));
+
+    }
+//
+    @Test
+    @Order(2)
+    public void getUsers_Return2() throws Exception {
+
+        List<User> userList = new ArrayList<>();
+        User anotherUser = new User();
+        anotherUser.setName("Andrey");
+        anotherUser.setEmail("andrey@gmail.com");
+        userList.add(user);
+        userList.add(anotherUser);
+
+        given(userService.getUsers()).willReturn(userList);
+
+        ResultActions response = mockMvc.perform(get("/api/shop/user/list"));
+
+        response.andExpect(status().isOk()).andExpect(jsonPath("$.size()", is(userList.size())));
 
     }
 
     @Test
-    public void getUsers_ReturnAll() throws Exception {
-        ResultActions result = mockMvc.perform(get("/api/shop/user/list"));
-
-        result.andExpect(status().isOk()).andExpect(jsonPath("$.[*]").exists());
-
-    }
-
-
-    @Test
+    @Order(3)
     public void getUser_withId1_returnUserWithOrders() throws Exception {
-        ResultActions result = mockMvc.perform(get("/api/shop/user/{id}", 1));
 
-        result.andExpect(status().isOk()).andExpect(jsonPath("$.name").value("Olya"))
-            .andExpect(jsonPath("$.email").value("kolesik_svoya@mail.ru"))
-            .andExpect(jsonPath("$.orders").isEmpty());
+        given(userService.findUserById(1)).willReturn(user);
+
+        ResultActions response = mockMvc.perform(get("/api/shop/user/{id}", 1));
+
+       response.andExpect(status().isOk())
+           .andExpect(jsonPath("$.name", is(user.getName())))
+            .andExpect(jsonPath("$.email", is(user.getEmail())))
+            .andExpect(jsonPath("$.orders").exists());
     }
 
     @Test
-    public void updateUser_setAlicia_returnAlicia() throws Exception {
+    @Order(4)
+    public void updateUser_setNikolay_returnNikolay() throws Exception {
 
-        ResultActions result = mockMvc.perform(patch("/api/shop/user/{id}", 2)
-                .contentType(MediaType.APPLICATION_JSON).content(userJson));
+        given(userService.findUserById(1)).willReturn(user);
+        user.setName("Nikolay");
+        user.setEmail("nikolay@gmail.com");
+        given(userService.save(user)).willReturn(user);
 
-        result.andExpect(status().isOk()).andExpect(jsonPath("$.name").value("Alicia"));
+        ResultActions result = mockMvc.perform(put("/api/shop/user/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(user)));
+
+        result.andExpect(status().isOk())
+            .andExpect(jsonPath("$.name", is(user.getName())))
+            .andExpect(jsonPath("$.email", is(user.getEmail())));
     }
 
     @Test
-    public void deleteUser_id2_statusOK() throws Exception {
-        ResultActions result = mockMvc.perform(delete("/api/shop/user/{id}", 2));
+    @Order(5)
+    public void deleteUser_id_isOk() throws Exception {
 
-        result.andExpect(status().isOk());
+        willDoNothing().given(userService).removeUser(1);
+
+        ResultActions response = mockMvc.perform(delete("/api/shop/user/{id}", 1));
+
+        response.andExpect(status().isOk());
     }
+
+
+
 
 
 }
