@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.javacode.internet_shop.jview.Views;
 import jakarta.persistence.*;
 
+import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.List;
 

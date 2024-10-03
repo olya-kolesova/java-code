@@ -9,8 +9,8 @@ import java.util.List;
 public class Item {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     private String name;
 
@@ -26,11 +26,11 @@ public class Item {
 
     public Item() {}
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

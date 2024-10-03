@@ -3,9 +3,7 @@ package com.javacode.internet_shop;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javacode.internet_shop.model.User;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,8 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,7 +28,7 @@ public class ShopControllerTest {
     @BeforeEach
     void setUp() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        User user = new User("Alice", "alice@gmail.com");
+        User user = new User("Alicia", "alicia@gmail.com");
         userJson = objectMapper.writeValueAsString(user);
     }
 
@@ -55,13 +52,29 @@ public class ShopControllerTest {
 
 
     @Test
-    public void getUser_withId1_returnUser() throws Exception {
+    public void getUser_withId1_returnUserWithOrders() throws Exception {
         ResultActions result = mockMvc.perform(get("/api/shop/user/{id}", 1));
 
         result.andExpect(status().isOk()).andExpect(jsonPath("$.name").value("Olya"))
-                .andExpect(jsonPath("$.email").value("kolesik_svoya@mail.ru"));
+            .andExpect(jsonPath("$.email").value("kolesik_svoya@mail.ru"))
+            .andExpect(jsonPath("$.orders").isEmpty());
     }
 
+    @Test
+    public void updateUser_setAlicia_returnAlicia() throws Exception {
+
+        ResultActions result = mockMvc.perform(patch("/api/shop/user/{id}", 2)
+                .contentType(MediaType.APPLICATION_JSON).content(userJson));
+
+        result.andExpect(status().isOk()).andExpect(jsonPath("$.name").value("Alicia"));
+    }
+
+    @Test
+    public void deleteUser_id2_statusOK() throws Exception {
+        ResultActions result = mockMvc.perform(delete("/api/shop/user/{id}", 2));
+
+        result.andExpect(status().isOk());
+    }
 
 
 }

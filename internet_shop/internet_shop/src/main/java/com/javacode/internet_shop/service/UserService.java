@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -29,12 +31,24 @@ public class UserService {
 
     }
 
-    public User save(User user) {
-        return userRepository.save(user);
+    public User save(User user) throws IllegalArgumentException {
+        if (isEmailValid(user.getEmail()) && !(user.getName().isBlank())) {
+            return userRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("Invalid email");
+        }
     }
 
     public User findUserById(long id) throws NoSuchElementException {
         return userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    }
+
+    public boolean isEmailValid(String email) {
+        return Pattern.compile("\\w+.*\\w*@[a-zA-Z]+\\.[a-zA-Z]+").matcher(email).matches();
+    }
+
+    public void removeUser(long id) {
+        userRepository.deleteById(id);
     }
 
 

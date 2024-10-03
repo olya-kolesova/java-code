@@ -2,6 +2,7 @@ package com.javacode.internet_shop.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.javacode.internet_shop.jview.Views;
+import com.javacode.internet_shop.model.Item;
 import com.javacode.internet_shop.model.User;
 import com.javacode.internet_shop.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,7 @@ public class ShopController {
         if (userService.isUserPresent(user.getEmail())) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         } else {
-            User returnedUser = userService.save(user);
-            return new ResponseEntity<>(user, HttpStatus.CREATED);
+            return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
         }
     }
 
@@ -41,6 +41,30 @@ public class ShopController {
     public ResponseEntity<Object> getUserById(@PathVariable long id) {
         return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
     }
+
+    @JsonView(Views.UserSummary.class)
+    @PatchMapping("/api/shop/user/{id}")
+    public ResponseEntity<Object> updateUserNameOrEmail(@PathVariable long id, @RequestBody User user) {
+        User userUpdated = userService.findUserById(id);
+        userUpdated.setName(user.getName());
+        userUpdated.setEmail(user.getEmail());
+        return new ResponseEntity<>(userService.save(userUpdated), HttpStatus.OK);
+
+    }
+
+    @JsonView(Views.UserSummary.class)
+    @DeleteMapping("api/shop/user/{id}")
+    public ResponseEntity<Object> deleteUser(@PathVariable long id) {
+        User removedUser = userService.findUserById(id);
+        userService.removeUser(id);
+        return new ResponseEntity<>(removedUser, HttpStatus.OK);
+
+    }
+
+
+
+
+
 
 
 

@@ -14,4 +14,9 @@ public class ControllerExceptionHandler {
     public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException e) {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException e) {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }
