@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @Table(name = "products")
 @Validated
 public class Product {
@@ -37,6 +38,20 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     private List<Order> productOrders;
 
+    public Product() {
+        this.productOrders = new ArrayList<>();
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

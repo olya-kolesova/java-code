@@ -32,14 +32,19 @@ public class ProductController {
         return new ResponseEntity<>(productService.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/api/shop/product/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable long id) {
+        return new ResponseEntity<>(productService.findById(id), HttpStatus.OK);
+    }
+
 
     @PutMapping("/api/shop/product/{id}")
-    public ResponseEntity<Object> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+    public ResponseEntity<Object> updateProduct(@PathVariable long id, @RequestBody Product product) {
         return new ResponseEntity<>(productService.update(id, product), HttpStatus.OK);
     }
 
     @DeleteMapping("/api/shop/product/{id}")
-    public ResponseEntity<Object> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteProduct(@PathVariable long id) {
         Product foundProduct = productService.findById(id);
         if (!foundProduct.getProductOrders().isEmpty()) {
             orderService.removeProductAssociation(foundProduct);

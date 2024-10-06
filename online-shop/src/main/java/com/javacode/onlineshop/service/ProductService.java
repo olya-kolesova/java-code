@@ -57,7 +57,7 @@ public class ProductService {
         foundProduct.setDescription(product.getDescription());
         foundProduct.setPrice(product.getPrice());
         foundProduct.setQuantityInStock(foundProduct.getQuantityInStock() + product.getQuantityInStock());
-        return productRepository.save(foundProduct);
+        return save(foundProduct);
     }
 
     public void delete(Product product) throws NoSuchElementException {
