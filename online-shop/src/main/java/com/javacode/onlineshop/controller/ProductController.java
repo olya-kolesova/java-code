@@ -15,12 +15,10 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductRepository productRepository;
     private final OrderService orderService;
 
-    public ProductController(ProductService productService, ProductRepository productRepository, OrderService orderService) {
+    public ProductController(ProductService productService, OrderService orderService) {
         this.productService = productService;
-        this.productRepository = productRepository;
         this.orderService = orderService;
     }
 
