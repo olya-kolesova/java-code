@@ -11,6 +11,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name = "employees")
 public class Employee {
 
     @Id
@@ -26,7 +27,7 @@ public class Employee {
     private double salary;
 
     @ManyToOne
-    @JoinColumn("department_id")
+    @JoinColumn(name = "department_id")
     private Department department;
 
 
