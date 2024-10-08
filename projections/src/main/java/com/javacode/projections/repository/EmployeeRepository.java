@@ -12,4 +12,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     List<EmployeeProjection> findAllByPosition(String position);
 
+    List<EmployeeProjection> findAllByDepartmentName(String departmentName);
+
+    void deleteAllByDepartmentId(long departmentId);
+
 }

@@ -23,5 +23,10 @@ public class DepartmentService {
         return departmentRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
+    public void deleteById(long id) throws NoSuchElementException {
+        Department department = departmentRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        departmentRepository.deleteById(department.getId());
+    }
+
 
 }
