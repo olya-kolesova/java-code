@@ -1,4 +1,6 @@
-package com.javacode.biblioteka;
+package com.javacode.biblioteka.repository;
+
+import com.javacode.biblioteka.model.Book;
 
 import java.util.List;
 

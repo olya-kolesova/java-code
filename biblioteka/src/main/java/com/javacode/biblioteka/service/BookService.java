@@ -1,5 +1,7 @@
-package com.javacode.biblioteka;
+package com.javacode.biblioteka.service;
 
+import com.javacode.biblioteka.repository.BookRepositoryImpl;
+import com.javacode.biblioteka.model.Book;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 

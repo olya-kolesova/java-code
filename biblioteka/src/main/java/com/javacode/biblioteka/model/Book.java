@@ -1,4 +1,4 @@
-package com.javacode.biblioteka;
+package com.javacode.biblioteka.model;
 
 import java.util.Objects;
 

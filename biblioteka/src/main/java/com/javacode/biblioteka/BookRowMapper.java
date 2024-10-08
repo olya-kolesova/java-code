@@ -1,5 +1,6 @@
 package com.javacode.biblioteka;
 
+import com.javacode.biblioteka.model.Book;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

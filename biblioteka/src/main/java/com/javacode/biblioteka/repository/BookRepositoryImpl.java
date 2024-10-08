@@ -1,5 +1,7 @@
-package com.javacode.biblioteka;
+package com.javacode.biblioteka.repository;
 
+import com.javacode.biblioteka.BookRowMapper;
+import com.javacode.biblioteka.model.Book;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;

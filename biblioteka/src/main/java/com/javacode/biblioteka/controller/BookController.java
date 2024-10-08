@@ -1,5 +1,7 @@
-package com.javacode.biblioteka;
+package com.javacode.biblioteka.controller;
 
+import com.javacode.biblioteka.model.Book;
+import com.javacode.biblioteka.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
