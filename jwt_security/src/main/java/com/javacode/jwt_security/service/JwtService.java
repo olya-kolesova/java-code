@@ -9,12 +9,13 @@ import io.jsonwebtoken.security.Keys;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,19 +28,17 @@ public class JwtService {
     @Autowired
     private final UserDetailsService userDetailsService;
 
-    @Value("${security.jwt.secret-key}")
-    private String SECRET_KEY;
 
 
     public JwtService(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
-    SecretKey secret = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
+    SecretKey secret = Jwts.SIG.HS256.key().build();
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        System.out.println(SECRET_KEY);
         return Jwts.builder()
+            .claims(extraClaims)
             .subject(userDetails.getUsername())
             .claim("roles", userDetails.getAuthorities())
             .issuedAt(new Date(System.currentTimeMillis()))

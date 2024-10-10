@@ -4,6 +4,7 @@ import com.javacode.jwt_security.model.Painting;
 import com.javacode.jwt_security.service.PaintingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,7 +16,7 @@ public class PaintingController {
         this.paintingService = paintingService;
     }
 
-
+    @Secured({"ADMIN", "MODERATOR"})
     @PostMapping("/api/painting")
     public ResponseEntity<Object> addPainting(@RequestBody Painting painting) {
         return new ResponseEntity<>(paintingService.save(painting), HttpStatus.CREATED);
@@ -26,7 +27,7 @@ public class PaintingController {
         return new ResponseEntity<>(paintingService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/api/paintiing/list")
+    @GetMapping("/api/painting/list")
     public ResponseEntity<Object> getAllPaintings() {
         return new ResponseEntity<>(paintingService.findAll(), HttpStatus.OK);
     }

@@ -3,10 +3,13 @@ package com.javacode.jwt_security.service;
 import com.javacode.jwt_security.dto.AuthenticationRequest;
 import com.javacode.jwt_security.dto.AuthenticationResponse;
 import com.javacode.jwt_security.dto.RegisterRequest;
+import com.javacode.jwt_security.dto.UnlockRequest;
 import com.javacode.jwt_security.model.Role;
 import com.javacode.jwt_security.model.User;
 import com.javacode.jwt_security.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,8 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
+    private int counter = 0;
+
     public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -37,7 +42,7 @@ public class AuthenticationService {
     }
 
 
-    public AuthenticationResponse register(RegisterRequest registerRequest) throws IllegalArgumentException {
+    public User register(RegisterRequest registerRequest) throws IllegalArgumentException {
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
@@ -49,19 +54,37 @@ public class AuthenticationService {
             }
             user.setRole(Role.valueOf(registerRequest.getRole().toUpperCase()));
         }
-        userRepository.save(user);
-        String accessToken = jwtService.generateToken(user);
-        String refreshToken = jwtService.generateToken(new HashMap<>(), user);
-        return new AuthenticationResponse(accessToken, refreshToken);
+        return userRepository.save(user);
 
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws NoSuchElementException {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-        User user = userRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow(NoSuchElementException::new);
+
+
+    public AuthenticationResponse authenticate(AuthenticationRequest request) throws BadCredentialsException, NoSuchElementException {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    request.getUsername(),
+                    request.getPassword()));
+        } catch (BadCredentialsException e) {
+            User foundUser = userRepository.findByUsername(request.getUsername()).orElseThrow(NoSuchElementException::new);
+            if (!foundUser.isAccountNonLocked()) {
+                throw new LockedException("Account is locked");
+            }
+            foundUser.setTrialsCounter(foundUser.getTrialsCounter() + 1);
+            if (foundUser.getTrialsCounter() > 4 && !foundUser.getRole().equals(Role.ADMIN)) {
+                foundUser.setNonlocked(false);
+            }
+                userRepository.save(foundUser);
+                throw new BadCredentialsException("Wrong username or password");
+
+        }
+
+        User user = userRepository.findByUsername(request.getUsername()).orElseThrow(
+            () -> new BadCredentialsException("Wrong username or password"));
         String accessToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateToken(new HashMap<>(), user);
         return new AuthenticationResponse(accessToken, refreshToken);
+
     }
 
     public AuthenticationResponse refresh(String refreshToken) throws NoSuchElementException {
@@ -75,5 +98,11 @@ public class AuthenticationService {
         return jwtService.validateToken(token);
     }
 
+    public User unlockUser(UnlockRequest unlockRequest) throws NoSuchElementException {
+        User user = userRepository.findByUsername(unlockRequest.username()).orElseThrow(NoSuchElementException::new);
+        user.setNonlocked(true);
+        user.setTrialsCounter(0);
+        return userRepository.save(user);
+    }
 
 }

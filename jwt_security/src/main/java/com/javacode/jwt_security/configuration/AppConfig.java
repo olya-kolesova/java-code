@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.NoSuchElementException;
 
+
 @Configuration
 public class AppConfig {
 
@@ -45,8 +46,6 @@ public class AppConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
-    @PropertySource
 
 
 }

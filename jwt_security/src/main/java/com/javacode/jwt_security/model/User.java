@@ -1,5 +1,7 @@
 package com.javacode.jwt_security.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.javacode.jwt_security.jsonview.Views;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,12 +24,19 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @JsonView(Views.Public.class)
     private String username;
 
     private String password;
 
+    @JsonView(Views.Unlocked.class)
+    private boolean nonlocked = true;
+
+    @JsonView(Views.Public.class)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private int trialsCounter = 0;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -46,7 +55,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return nonlocked;
     }
 
     @Override

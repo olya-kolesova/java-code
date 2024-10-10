@@ -11,6 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -31,7 +32,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                     .requestMatchers(HttpMethod.POST,"/register").permitAll()
                     .requestMatchers(HttpMethod.POST,"/login").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/painting").hasAuthority("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/unlock").hasAuthority("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/api/painting").hasAnyAuthority("ADMIN", "MODERATOR")
                     .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
@@ -39,5 +41,6 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+
 
 }
