@@ -1,12 +1,8 @@
 package com.javacode.simple_security.configuration;
 
-import com.zaxxer.hikari.HikariDataSource;
 import jakarta.servlet.DispatcherType;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -24,7 +20,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
@@ -32,20 +27,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public static BeanPostProcessor clearDataSourceUserName() {
-//        return new BeanPostProcessor() {
-//
-//            @Override
-//            public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-//                if (bean instanceof HikariDataSource) {
-//                    ((HikariDataSource) bean).setUsername("");
-//                }
-//                return bean;
-//            }
-//
-//        };
-//    }
 
     @Bean
     UserDetailsService userDetailsService() {
