@@ -7,6 +7,9 @@ import com.javacode.jwt_security.dto.UnlockRequest;
 import com.javacode.jwt_security.model.Role;
 import com.javacode.jwt_security.model.User;
 import com.javacode.jwt_security.repository.UserRepository;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -28,7 +31,8 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
-    private int counter = 0;
+    private static final Logger logger = LogManager.getLogger(AuthenticationService.class);
+
 
     public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
@@ -60,29 +64,34 @@ public class AuthenticationService {
 
 
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) throws BadCredentialsException, NoSuchElementException {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) throws BadCredentialsException,
+            NoSuchElementException, LockedException {
+        logger.info("User is trying to authenticate");
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     request.getUsername(),
                     request.getPassword()));
         } catch (BadCredentialsException e) {
-            User foundUser = userRepository.findByUsername(request.getUsername()).orElseThrow(NoSuchElementException::new);
+            User foundUser = userRepository.findByUsername(request.getUsername()).orElseThrow(
+                () -> new NoSuchElementException("User not found"));
             if (!foundUser.isAccountNonLocked()) {
                 throw new LockedException("Account is locked");
             }
             foundUser.setTrialsCounter(foundUser.getTrialsCounter() + 1);
+            logger.info("Wrong password input. {} trials left", 5 - foundUser.getTrialsCounter());
             if (foundUser.getTrialsCounter() > 4 && !foundUser.getRole().equals(Role.ADMIN)) {
                 foundUser.setNonlocked(false);
+                logger.info("User is locked");
             }
                 userRepository.save(foundUser);
                 throw new BadCredentialsException("Wrong username or password");
-
         }
 
         User user = userRepository.findByUsername(request.getUsername()).orElseThrow(
             () -> new BadCredentialsException("Wrong username or password"));
         String accessToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateToken(new HashMap<>(), user);
+        logger.info("User authenticated. Tokens generated.");
         return new AuthenticationResponse(accessToken, refreshToken);
 
     }
