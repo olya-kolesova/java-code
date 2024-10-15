@@ -1,0 +1,29 @@
+2024-10-15 07:16:41 [main] INFO  com.javacode.oauthsocialapp.OauthSocialAppApplication - Starting OauthSocialAppApplication using Java 22 with PID 46984 (/Users/olka/IdeaProjects/java-code/oauth-social-app/target/classes started by olka in /Users/olka/IdeaProjects/java-code/oauth-social-app)
+2024-10-15 07:16:41 [main] INFO  com.javacode.oauthsocialapp.OauthSocialAppApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-15 07:16:42 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-15 07:16:42 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 77 ms. Found 1 JPA repository interface.
+2024-10-15 07:16:43 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 28852 (http)
+2024-10-15 07:16:43 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2081 ms
+2024-10-15 07:16:44 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-15 07:16:44 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-15 07:16:44 [main] INFO  org.hibernate.cache.internal.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-10-15 07:16:45 [main] INFO  org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-15 07:16:45 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-15 07:16:46 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./social_app_db user=SA
+2024-10-15 07:16:46 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-15 07:16:47 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-15 07:16:48 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-15 07:16:48 [main] WARN  org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-15 07:16:48 [main] INFO  org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2024-10-15 07:16:49 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 28852 (http) with context path '/'
+2024-10-15 07:16:49 [main] INFO  com.javacode.oauthsocialapp.OauthSocialAppApplication - Started OauthSocialAppApplication in 7.829 seconds (process running for 9.43)
+2024-10-15 07:17:23 [http-nio-28852-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-15 07:17:23 [http-nio-28852-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2024-10-15 07:17:23 [http-nio-28852-exec-1] INFO  com.javacode.oauthsocialapp.controller.UserController - Visiting public page.
+2024-10-15 07:17:35 [http-nio-28852-exec-6] INFO  com.javacode.oauthsocialapp.controller.UserController - Visiting user page.
+2024-10-15 07:17:55 [http-nio-28852-exec-2] INFO  com.javacode.oauthsocialapp.service.CustomUserDetailsService - CustomUserDetailsService is going to find saved user to login
+2024-10-15 07:17:55 [http-nio-28852-exec-2] INFO  com.javacode.oauthsocialapp.service.CustomUserDetailsService - User has been found
+2024-10-15 07:17:55 [http-nio-28852-exec-3] INFO  com.javacode.oauthsocialapp.controller.UserController - Visiting admin page.
+2024-10-15 07:18:23 [SpringApplicationShutdownHook] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-15 07:18:23 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-15 07:18:23 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
