@@ -1,5 +1,6 @@
 package com.javacode.oauthsocialapp.model;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +20,7 @@ public class AppUser {
 
     private String username;
 
-    private String password = "12345";
+    private String password = "{noop}12345";
 
     private String email;
 
@@ -27,6 +28,12 @@ public class AppUser {
 
     private String role = "USER";
 
-
+    public AppUser(String username, String password, String email, String bio, String role) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.bio = bio;
+        this.role = role;
+    }
 
 }

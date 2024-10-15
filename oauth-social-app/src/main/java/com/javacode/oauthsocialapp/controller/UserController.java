@@ -36,13 +36,14 @@ public class UserController {
         AppUser user = userService.findByUsername(username);
         model.addAttribute("username", user.getUsername());
         model.addAttribute("bio", user.getBio());
-        model.addAttribute("email", user.getEmail());
         return "user";
     }
 
     @GetMapping("/admin")
     public String admin(Principal principal, Model model) {
+        AppUser admin = userService.findByUsername(principal.getName());
         model.addAttribute("username", principal.getName());
+        model.addAttribute("bio", admin.getBio());
         return "admin";
     }
 
