@@ -22,7 +22,6 @@ public class OrderService {
     @Transactional
     public Order create(Order order) throws JsonProcessingException {
         producer.sendMessage(order);
-        System.out.println("Message sent");
         return orderRepository.save(order);
     }
 }

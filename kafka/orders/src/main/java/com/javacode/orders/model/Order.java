@@ -17,4 +17,5 @@ public class Order {
     private long id;
     private String item;
     private int quantity;
+    private double price;
 }
