@@ -830,3 +830,4 @@
 2024-10-18 14:47:20 [http-nio-8080-exec-2] INFO  org.apache.kafka.common.utils.AppInfoParser - Kafka startTimeMs: 1729259240257
 2024-10-18 14:47:20 [kafka-producer-network-thread | orders-producer-1] INFO  org.apache.kafka.clients.Metadata - [Producer clientId=orders-producer-1] Cluster ID: griSJ7sjQXaiGKT_SAkAgA
 2024-10-18 14:47:20 [kafka-producer-network-thread | orders-producer-1] INFO  org.apache.kafka.clients.producer.internals.TransactionManager - [Producer clientId=orders-producer-1] ProducerId set to 8 with epoch 0
+2024-10-18 14:56:20 [kafka-producer-network-thread | orders-producer-1] INFO  org.apache.kafka.clients.NetworkClient - [Producer clientId=orders-producer-1] Node -1 disconnected.

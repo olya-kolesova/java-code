@@ -1000,3 +1000,4 @@
 2024-10-18 14:47:20 [kafka-producer-network-thread | payment-producer-1] INFO  org.apache.kafka.clients.producer.internals.TransactionManager - [Producer clientId=payment-producer-1] ProducerId set to 9 with epoch 0
 2024-10-18 14:47:20 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  com.javacode.payment.service.PaidOrderService - Paid order saved successfully
 2024-10-18 14:55:10 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  org.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-new_orders-1, groupId=new_orders] Node -1 disconnected.
+2024-10-18 14:56:20 [kafka-producer-network-thread | payment-producer-1] INFO  org.apache.kafka.clients.NetworkClient - [Producer clientId=payment-producer-1] Node -1 disconnected.

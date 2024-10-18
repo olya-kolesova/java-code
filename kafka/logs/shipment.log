@@ -315,3 +315,5 @@
 2024-10-18 14:47:21 [kafka-producer-network-thread | shipping-producer-1] INFO  org.apache.kafka.clients.Metadata - [Producer clientId=shipping-producer-1] Cluster ID: griSJ7sjQXaiGKT_SAkAgA
 2024-10-18 14:47:21 [kafka-producer-network-thread | shipping-producer-1] INFO  org.apache.kafka.clients.producer.internals.TransactionManager - [Producer clientId=shipping-producer-1] ProducerId set to 10 with epoch 0
 2024-10-18 14:47:21 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  com.javacode.shipping.service.ShippedOrderService - Shipped order saved successfully
+2024-10-18 14:55:30 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  org.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-paid_orders-1, groupId=paid_orders] Node -1 disconnected.
+2024-10-18 14:56:21 [kafka-producer-network-thread | shipping-producer-1] INFO  org.apache.kafka.clients.NetworkClient - [Producer clientId=shipping-producer-1] Node -1 disconnected.
