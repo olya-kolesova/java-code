@@ -1,11 +1,9 @@
-package com.javacode.payment.consumer;
+package com.javacode.shipping.consumer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.javacode.payment.dto.OrderDto;
-import com.javacode.payment.dto.PaidOrderDto;
-import com.javacode.payment.model.PaidOrder;
-import com.javacode.payment.service.PaidOrderService;
+import com.javacode.shipping.dto.PaidOrderDto;
+import com.javacode.shipping.dto.ShippedOrderDto;
+import com.javacode.shipping.service.ShippedOrderService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,15 +16,15 @@ public class Consumer {
 
     Logger logger = LoggerFactory.getLogger(Consumer.class);
 
-    private final String topic = "new_orders";
+    private final String topic = "paid_orders";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final ModelMapper modelMapper;
-    private final PaidOrderService paidOrderService;
+    private final ShippedOrderService shippedOrderService;
 
-    public Consumer(ModelMapper modelMapper, PaidOrderService paidOrderService) {
+    public Consumer(ModelMapper modelMapper, ShippedOrderService shippedOrderService) {
         this.modelMapper = modelMapper;
-        this.paidOrderService = paidOrderService;
+        this.shippedOrderService = shippedOrderService;
     }
 
     @KafkaListener(topics = topic, groupId = topic)
@@ -34,10 +32,10 @@ public class Consumer {
     public void consumeMessage(String message) {
         try {
             logger.info("Consumed message: {}", message);
-            OrderDto orderDto = objectMapper.readValue(message, OrderDto.class);
-            PaidOrderDto paidOrderDto = modelMapper.map(orderDto, PaidOrderDto.class);
-            paidOrderDto.setPaid(true);
-            paidOrderService.save(paidOrderDto);
+            PaidOrderDto paidOrderDto = objectMapper.readValue(message, PaidOrderDto.class);
+            ShippedOrderDto shippedOrderDto = modelMapper.map(paidOrderDto, ShippedOrderDto.class);
+            shippedOrderDto.setPaid(true);
+            shippedOrderService.save(shippedOrderDto);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
