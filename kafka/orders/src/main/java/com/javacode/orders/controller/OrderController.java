@@ -1,6 +1,7 @@
 package com.javacode.orders.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.javacode.orders.dto.OrderDto;
 import com.javacode.orders.model.Order;
 import com.javacode.orders.service.OrderService;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,8 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public ResponseEntity<Object> createOrder(@RequestBody Order order) throws JsonProcessingException {
-        return new ResponseEntity<>(orderService.create(order), HttpStatus.CREATED);
+    public ResponseEntity<Object> createOrder(@RequestBody OrderDto orderDto) throws JsonProcessingException {
+        return new ResponseEntity<>(orderService.create(orderDto), HttpStatus.CREATED);
     }
 
 

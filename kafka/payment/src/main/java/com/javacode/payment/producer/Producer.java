@@ -1,9 +1,8 @@
-package com.javacode.orders.producer;
+package com.javacode.payment.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.javacode.orders.dto.OrderDto;
-import com.javacode.orders.model.Order;
+import com.javacode.payment.model.PaidOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,8 +24,8 @@ public class Producer {
         this.kafkaTemplate.setDefaultTopic(orderTopic);
     }
 
-    public void sendMessage(OrderDto orderDto) throws JsonProcessingException {
-        String orderMessage = objectMapper.writeValueAsString(orderDto);
+    public void sendMessage(PaidOrder paidOrder) throws JsonProcessingException {
+        String orderMessage = objectMapper.writeValueAsString(paidOrder);
         logger.info("Sending message to topic {}", orderTopic);
         kafkaTemplate.send(orderTopic, orderMessage);
     }

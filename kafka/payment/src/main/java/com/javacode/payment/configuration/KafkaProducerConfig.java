@@ -1,12 +1,12 @@
-package com.javacode.orders.configuration;
+package com.javacode.payment.configuration;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -17,10 +17,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-
+@EnableKafka
 public class KafkaProducerConfig {
 
-    @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers;
+    @Value("${spring.kafka.bootstrap-servers}")
+    String bootstrapServers;
 
     @Bean
     public ProducerFactory<String, String> producerFactory() {
@@ -40,14 +41,10 @@ public class KafkaProducerConfig {
     @Bean
     public NewTopic topic() {
         return TopicBuilder
-                .name("new_orders")
+                .name("paid_orders")
                 .partitions(1)
                 .build();
 
     }
-
-    @Bean
-    ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
 }
+
